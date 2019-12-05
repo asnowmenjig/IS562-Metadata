@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1">
+    <xsd:element name="crustWrap">
+        <xsd:annotation>
+            <xsd:documentation>Holds a collection of CRUST records.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="crust"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="crust">
+        <xsd:annotation>
+            <xsd:documentation>Root element.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeObjectEntity"/>
+                <xsd:element ref="menuCollectionEntity"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeObjectEntity">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeObjectIdentifierWrap"/>
+                <xsd:element ref="pricingWrap"/>
+                <xsd:element ref="recipeWrap"/>
+                <xsd:element ref="imageWrap" minOccurs="0"/>
+                <xsd:element ref="linkedMenusWrap"/>
+                <xsd:element ref="linkedRecipeObjectsWrap"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="menuCollectionEntity">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="menuIdentifierWrap"/>
+                <xsd:element ref="description"/>
+                <xsd:element ref="creationModificationSet"/>
+                <xsd:element ref="menuConditionSet" minOccurs="0"/>
+                <xsd:element ref="linkedRecipeObjectsWrap"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeObjectIdentifierWrap">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe object entity identification.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeObjectIdentifierSet"/>
+                <xsd:element ref="recipeObjectName" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeObjectIdentifierSet">
+        <xsd:annotation>
+            <xsd:documentation>A designation used to identify the recipe object entity uniquely within the preservation repository system in which it is stored.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeObjectIdentifierType"/>
+                <xsd:element ref="recipeObjectIdentifierValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeObjectIdentifierType" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The domain where the recipe object entity identifier is unique. Use of controlled vocabulary strongly suggested. Recommended controlled vocabulary is SKU.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="recipeObjectIdentifierValue" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The value of the recipeObjectIdentifier.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="recipeObjectName">
+        <xsd:annotation>
+            <xsd:documentation>A human-readable name for the recipe object entity. This text will be displayed on the bakery menu for customer reference.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="pref"/>
+                    <xsd:attribute ref="lang"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="pricingWrap">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for finance information relating to front-end customer pricing.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="priceStandardSet"/>
+                <xsd:element ref="specialPricesWrapper" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="priceStandardSet">
+        <xsd:annotation>
+            <xsd:documentation>A set containing standard purchase pricing information.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="pricePerYield"/>
+                <xsd:element ref="pricePerServing" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="pricePerYield">
+        <xsd:annotation>
+            <xsd:documentation>Standard purchase price for the total amount produced by the recipe (see recipeYield)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:decimal">
+                    <xsd:attribute ref="currency"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="pricePerServing">
+        <xsd:annotation>
+            <xsd:documentation>Standard cost of a single serving sale (see recipeServingSize)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:decimal">
+                    <xsd:attribute ref="currency"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="specialPricesWrapper">
+        <xsd:annotation>
+            <xsd:documentation>A wrapper for special pricing conditions.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="specialPriceSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="specialPriceSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a single special pricing instance.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="condition" maxOccurs="unbounded"/>
+                <xsd:element ref="price" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="price" type="xsd:decimal">
+        <xsd:annotation>
+            <xsd:documentation>Cost to consumer.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="condition">
+        <xsd:annotation>
+            <xsd:documentation>Condition under which set subject is active.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="seasonality"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeWrap">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe information of the recipe object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeIngredientsWrapper"/>
+                <xsd:element ref="recipeInstructionSet"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeIngredientsWrapper">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeIngredientSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeIngredientSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for the standard version of the ingredient.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="ingredientStandardSet"/>
+                <xsd:element ref="ingredientSubstitutionSet"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ingredientStandardSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a standard ingredient used in the recipe.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="ingredientItemIdentifier"/>
+                <xsd:element ref="ingredientItemQuantity"/>
+                <xsd:element ref="ingredientItemBrand" maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:element ref="ingredientItemSource" maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:element ref="suitableForDiet" maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ingredientItemIdentifier" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>A single ingredient item.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="ingredientItemQuantity">
+        <xsd:annotation>
+            <xsd:documentation>Quantity value for ingredient item.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:decimal">
+                    <xsd:attribute ref="measurementUnit"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ingredientItemBrand">
+        <xsd:annotation>
+            <xsd:documentation>If bakery has specific brand preference for ingredient item (i.e. one particular commercial manufacturer over others), indicate here.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="req"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ingredientItemSource">
+        <xsd:annotation>
+            <xsd:documentation>If bakery has specific source preference for ingredient item (i.e. one particular vendor over commercial vendors), indicate here.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="req"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="suitableForDiet" type="xsd:string"/>
+    <xsd:element name="ingredientSubstitutionSet">
+        <xsd:annotation>
+            <xsd:documentation>A set containing ingredient substitutions options for a single ingredient item.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="ingredientItemIdentifier"/>
+                <xsd:element ref="ingredientItemQuantity"/>
+                <xsd:element ref="ingredientItemBrand" maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:element ref="ingredientItemSource" maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:element ref="suitableForDiet" maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeInstructionSet">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe instructions.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeStepsWrapper"/>
+                <xsd:element ref="recipeTimeSet"/>
+                <xsd:element ref="recipePortionWrapper"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeStepsWrapper">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe instruction steps.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeStepSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeStepSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a single step item.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="step"/>
+                <xsd:element ref="tool" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="step" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>A single step item.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="tool"/>
+    <xsd:element name="recipeTimeSet">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe execution time length.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="totalTime"/>
+                <xsd:element ref="prepTime"/>
+                <xsd:element ref="cookTime"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="totalTime" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Total amount of time required to execute the full recipe. Should equal sum of recipePrepTime and recipeCookTime.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="prepTime" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Total time required to actively prepare the recipe. Including but not limited to ingredient preparation, mixing, rising, resting, refrigerating, etc.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="cookTime" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Total inactive time required to cook the final product.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="recipePortionWrapper">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for recipe portioning information.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeYield"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeYield" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Total amount of food produced by the recipe. Examples: 1 loaf, 2 cake layers, 1 frosted cake, 12 cupcakes, etc.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="recipeServingSizeSet">
+        <xsd:annotation>
+            <xsd:documentation>A set containing information about a single serving of recipeYield.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="recipeServingSize"/>
+                <xsd:element ref="recipeServingsPerYield" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeServingSize">
+        <xsd:annotation>
+            <xsd:documentation>How recipeYield should be portioned for single serving sales.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="servingUnit"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="recipeServingsPerYield">
+        <xsd:annotation>
+            <xsd:documentation>Amount of recipeServingSize contained in recipeYield. Include if not already explicated in recipeYield. Example: if recipeYield is “1 pie” and recipeServingSize is “1 slice”, this field may contain “8 slices”.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="servingUnit"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="imageWrap">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for images of the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="imageSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="imageSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a single image of the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="imageIdentifierSet"/>
+                <xsd:element ref="description" minOccurs="0"/>
+                <xsd:element ref="creationModificationSet"/>
+                <xsd:element ref="imageConditionSet" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="imageIdentifierSet">
+        <xsd:annotation>
+            <xsd:documentation>A designation used to identify the image uniquely within the preservation repository system in which it is stored.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="imageIdentifierType"/>
+                <xsd:element ref="imageIdentifierValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="imageIdentifierType" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The domain where the image identifier is unique.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="imageIdentifierValue" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The value of the imageIdentifier.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="description" type="xsd:string"/>
+    <xsd:element name="creationModificationSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for creation and modification information.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="creator" maxOccurs="unbounded"/>
+                <xsd:element ref="dateCreated" minOccurs="0"/>
+                <xsd:element ref="dateModified" maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="creator">
+        <xsd:annotation>
+            <xsd:documentation>Name of a single entity involved in creation.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute ref="creatorType"/>
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="dateCreated" type="xsd:date">
+        <xsd:annotation>
+            <xsd:documentation>The actual or approximate date and time of creation.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="dateModified" type="xsd:date">
+        <xsd:annotation>
+            <xsd:documentation>An actual or approximate date and time of any modification(s).</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="imageConditionSet">
+        <xsd:annotation>
+            <xsd:documentation>A set containing conditions in which the image will be displayed.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="condition" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="linkedMenusWrap">
+        <xsd:annotation>
+            <xsd:documentation>Wrap for linked menu entity records associated with the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="linkedMenuIdentifierSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="linkedMenuIdentifierSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a single menu entity record linked to the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="linkedMenuIdentifierType"/>
+                <xsd:element ref="linkedMenuIdentifierValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="linkedMenuIdentifierType" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The domain where the menu entity identifier is unique.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="linkedMenuIdentifierValue" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The value of the recipeMenuIdentifier.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="linkedRecipeObjectsWrap">
+        <xsd:annotation>
+            <xsd:documentation>Wrap for linked recipe Object entity records associated with the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="linkedRecipeObjectIdentifierSet" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="linkedRecipeObjectIdentifierSet">
+        <xsd:annotation>
+            <xsd:documentation>A set for a single recipe Object record linked to the recipe Object entity.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="linkedRecipeObjectIdentifierType"/>
+                <xsd:element ref="linkedRecipeObjectIdentifierValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="linkedRecipeObjectIdentifierType" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The domain where the recipe object entity identifier is unique.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="linkedRecipeObjectIdentifierValue">
+        <xsd:annotation>
+            <xsd:documentation>The value of the recipeObjectIdentifier.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="menuIdentifierWrap">
+        <xsd:annotation>
+            <xsd:documentation>A wrap for menu entity identification.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="menuIdentiferSet"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="menuIdentiferSet">
+        <xsd:annotation>
+            <xsd:documentation>A designation used to identify the menu entity uniquely within the preservation repository system in which it is stored.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="menuIdentifierType"/>
+                <xsd:element ref="menuIdentifierValue"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="menuIdentifierType" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The domain where the menu entity identifier is unique.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="menuIdentifierValue" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>The value of the menuIdentifier.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="menuConditionSet">
+        <xsd:annotation>
+            <xsd:documentation>A set containing conditions in which the menu will be implemented.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="condition" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:attribute name="pref" type="xsd:string"/>
+    <xsd:attribute name="lang" type="xsd:string"/>
+    <xsd:attribute name="currency" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Controlled vocabulary: ISO 4217</xsd:documentation>
+        </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="portion" type="xsd:string"/>
+    <xsd:attribute name="seasonality" type="xsd:string"/>
+    <xsd:attribute name="measurementUnit" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>Metric or U.S. customary units</xsd:documentation>
+        </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="servingUnit" type="xsd:string">
+        <xsd:annotation>
+            <xsd:documentation>If portioning is by weight or volume, use metric or U.S. customary units. Otherwise, use appropriate single portion terminology (examples: slice, cupcake, etc.). Unit must be consistent within set.</xsd:documentation>
+        </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="req" type="xsd:string"/>
+    <xsd:attribute name="creatorType" type="xsd:string"/>
+</xsd:schema>
